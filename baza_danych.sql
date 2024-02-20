@@ -1,5 +1,3 @@
-drop table przesylki;
-
 create table przesylki(
     idPrzesylka int,
     nazwa varchar(45),
