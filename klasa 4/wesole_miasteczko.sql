@@ -15,7 +15,7 @@ create table bilety (
     id_biletu int auto_increment primary key,
     id_klienta int,
     rodzaj enum('normalny', 'ulgowy', 'rodzinny') not null,
-    cena decimal(10, a2) not null,
+    cena decimal(10, 2) not null,
     data_zakupu timestamp default current_timestamp,
     foreign key (id_klienta) references klienci(id_klienta) on delete set null
 );
