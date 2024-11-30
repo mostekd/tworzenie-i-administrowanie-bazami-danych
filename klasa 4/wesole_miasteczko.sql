@@ -1,78 +1,154 @@
+drop database if exists amusement_park;
+create database amusement_park;
+use amusement_park;
 
-drop database if exists wesole_miasteczko;
-create database wesole_miasteczko;
-use wesole_miasteczko;
-
-create table klienci (
-    id_klienta int auto_increment primary key,
-    imie varchar(50) not null,
-    nazwisko varchar(50) not null,
-    email varchar(100) unique,
-    telefon varchar(15)
+create table customers (
+    customer_id int primary key auto_increment,
+    first_name varchar(25),
+    last_name varchar(50),
+    phone_number varchar(15),
+    email_address varchar(50)
 );
 
-create table bilety (
-    id_biletu int auto_increment primary key,
-    id_klienta int,
-    rodzaj enum('normalny', 'ulgowy', 'rodzinny') not null,
-    cena decimal(10, 2) not null,
-    data_zakupu timestamp default current_timestamp,
-    foreign key (id_klienta) references klienci(id_klienta) on delete set null
+create table positions (
+    position_id int primary key auto_increment,
+    position_name varchar(20)
 );
 
-create table atrakcje (
-    id_atrakcji int auto_increment primary key,
-    nazwa varchar(100) not null,
-    opis text,
-    limit_wieku int default 0,
-    cena decimal(10, 2) not null
+create table employees (
+    employee_id int primary key auto_increment,
+    position_id int,
+    customer_id int,
+    contract_number varchar(20),
+    employment_end_date date,
+    salary varchar(10),
+    bonus varchar(5),
+    foreign key (position_id) references positions (position_id),
+    foreign key (customer_id) references customers (customer_id)
 );
 
-create table pracownicy (
-    id_pracownika int auto_increment primary key,
-    imie varchar(50) not null,
-    nazwisko varchar(50) not null,
-    stanowisko varchar(100),
-    data_zatrudnienia date default current_date
+create table attractions (
+    attraction_id int primary key auto_increment,
+    name varchar(20),
+    description varchar(255),
+    employee_id int,
+    foreign key (employee_id) references employees (employee_id)
 );
 
-create table harmonogram (
-    id_harmonogramu int auto_increment primary key,
-    id_pracownika int,
-    id_atrakcji int,
-    data date not null,
-    godzina_start time not null,
-    godzina_koniec time not null,
-    foreign key (id_pracownika) references pracownicy(id_pracownika) on delete cascade,
-    foreign key (id_atrakcji) references atrakcje(id_atrakcji) on delete cascade
+create table ticket_types (
+    ticket_type_id int primary key auto_increment,
+    ticket_type varchar(10)
 );
 
-insert into klienci (imie, nazwisko, email, telefon)
-values
-('jan', 'kowalski', 'jan.kowalski@example.com', '123456789'),
-('anna', 'nowak', 'anna.nowak@example.com', '987654321'),
-('piotr', 'wiśniewski', null, '564738291');
+create table discounts (
+    discount_type_id int primary key auto_increment,
+    discount_type varchar(10),
+    discount_value varchar(5)
+);
 
-insert into atrakcje (nazwa, opis, limit_wieku, cena)
-values
-('kolejka górska', 'szybka i emocjonująca przejażdżka.', 12, 15.00),
-('diabelski młyn', 'wspaniałe widoki z góry.', 0, 10.00),
-('karuzela', 'klasyczna atrakcja dla dzieci.', 0, 5.00);
+create table tickets (
+    ticket_id int primary key auto_increment,
+    ticket_type_id int,
+    discount_id int,
+    price varchar(5),
+    foreign key (ticket_type_id) references ticket_types (ticket_type_id),
+    foreign key (discount_id) references discounts (discount_type_id)
+);
 
-insert into pracownicy (imie, nazwisko, stanowisko)
-values
-('tomasz', 'zieliński', 'operator kolejki górskiej'),
-('ewa', 'kwiatkowska', 'obsługa diabelskiego młyna'),
-('karolina', 'mazur', 'obsługa karuzeli');
+create table payment_types (
+    payment_type_id int primary key auto_increment,
+    payment_type varchar(10)
+);
 
-insert into bilety (id_klienta, rodzaj, cena)
-values
-(1, 'normalny', 50.00),
-(2, 'ulgowy', 30.00),
-(3, 'rodzinny', 120.00);
+create table orders (
+    order_id int primary key auto_increment,
+    customer_id int,
+    ticket_id int,
+    approving_employee_id int,
+    purchase_date datetime,
+    foreign key (ticket_id) references tickets (ticket_id),
+    foreign key (customer_id) references customers (customer_id),
+    foreign key (approving_employee_id) references employees (employee_id)
+);
 
-insert into harmonogram (id_pracownika, id_atrakcji, data, godzina_start, godzina_koniec)
-values
-(1, 1, '2024-12-01', '10:00:00', '18:00:00'),
-(2, 2, '2024-12-01', '10:00:00', '18:00:00'),
-(3, 3, '2024-12-01', '10:00:00', '16:00:00');
+drop database if exists amusement_park;
+create database amusement_park;
+use amusement_park;
+
+create table customers (
+    customer_id int primary key auto_increment,
+    first_name varchar(25),
+    last_name varchar(50),
+    phone_number varchar(15),
+    email_address varchar(50)
+);
+
+create table positions (
+    position_id int primary key auto_increment,
+    position_name varchar(20)
+);
+
+create table employees (
+    employee_id int primary key auto_increment,
+    position_id int,
+    customer_id int,
+    contract_number varchar(20),
+    employment_end_date date,
+    salary varchar(10),
+    bonus varchar(5),
+    foreign key (position_id) references positions (position_id),
+    foreign key (customer_id) references customers (customer_id)
+);
+
+create table attractions (
+    attraction_id int primary key auto_increment,
+    name varchar(20),
+    description varchar(255),
+    employee_id int,
+    foreign key (employee_id) references employees (employee_id)
+);
+
+create table ticket_types (
+    ticket_type_id int primary key auto_increment,
+    ticket_type varchar(10)
+);
+
+create table discounts (
+    discount_type_id int primary key auto_increment,
+    discount_type varchar(10),
+    discount_value decimal(5,2)
+);
+
+create table tickets (
+    ticket_id int primary key auto_increment,
+    ticket_type_id int,
+    discount_id int,
+    price decimal(10,2)
+    foreign key (ticket_type_id) references ticket_types (ticket_type_id),
+    foreign key (discount_id) references discounts (discount_type_id)
+);
+
+create table payment_types (
+    payment_type_id int primary key auto_increment,
+    payment_type varchar(10)
+);
+
+create table orders (
+    order_id int primary key auto_increment,
+    customer_id int,
+    approving_employee_id int,
+    purchase_date datetime,
+    payment_type_id int,
+    foreign key (customer_id) references customers (customer_id),
+    foreign key (approving_employee_id) references employees (employee_id),
+    foreign key (payment_type_id) references payment_types (payment_type_id)
+);
+
+create table order_tickets (
+    order_ticket_id int primary key auto_increment,
+    order_id int,
+    ticket_id int,
+    quantity int,
+    foreign key (order_id) references orders (order_id),
+    foreign key (ticket_id) references tickets (ticket_id)
+);
