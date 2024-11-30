@@ -282,3 +282,17 @@ values
 (8, null, 9, '2024-11-08 17:50:00'),
 (9, null, 10, '2024-11-09 18:55:00'),
 (10, null, 1, '2024-11-10 19:50:00');
+
+-- Stworzenie użytkownika 'admin' z pełnymi uprawnieniami
+create user 'admin_amusement_park'@'localhost' identified by 'hasło_admina';
+grant all privileges on amusement_park.* to 'admin'@'localhost';
+
+-- Stworzenie użytkownika 'worker' z ograniczonymi uprawnieniami
+create user 'worker_amusement_parkr'@'localhost' identified by 'hasło_pracownika';
+grant select, insert, update, delete on amusement_park.customers to 'worker'@'localhost';
+grant select, insert, update, delete on amusement_park.orders to 'worker'@'localhost';
+grant select, insert, update, delete on amusement_park.attractions to 'worker'@'localhost';
+grant select, insert, update, delete on amusement_park.employees to 'worker'@'localhost';
+
+-- Zastosowanie uprawnień
+flush privileges;
