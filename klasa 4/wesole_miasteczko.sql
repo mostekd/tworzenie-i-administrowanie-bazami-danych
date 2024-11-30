@@ -1,154 +1,94 @@
+-- Usunięcie bazy danych, jeśli istnieje, aby uniknąć konfliktów
 drop database if exists amusement_park;
+
+-- Utworzenie nowej bazy danych
 create database amusement_park;
 use amusement_park;
 
+-- Tabela przechowująca dane klientów
 create table customers (
-    customer_id int primary key auto_increment,
-    first_name varchar(25),
-    last_name varchar(50),
-    phone_number varchar(15),
-    email_address varchar(50)
+    customer_id int primary key auto_increment, -- Unikalny identyfikator klienta
+    first_name varchar(25),                     -- Imię klienta
+    last_name varchar(50),                      -- Nazwisko klienta
+    phone_number varchar(15),                   -- Numer telefonu
+    email_address varchar(50)                   -- Adres e-mail
 );
 
+-- Tabela przechowująca rodzaje stanowisk pracy
 create table positions (
-    position_id int primary key auto_increment,
-    position_name varchar(20)
+    position_id int primary key auto_increment, -- Unikalny identyfikator stanowiska
+    position_name varchar(20)                   -- Nazwa stanowiska
 );
 
+-- Tabela przechowująca dane pracowników
 create table employees (
-    employee_id int primary key auto_increment,
-    position_id int,
-    customer_id int,
-    contract_number varchar(20),
-    employment_end_date date,
-    salary varchar(10),
-    bonus varchar(5),
-    foreign key (position_id) references positions (position_id),
-    foreign key (customer_id) references customers (customer_id)
+    employee_id int primary key auto_increment, -- Unikalny identyfikator pracownika
+    position_id int,                            -- Identyfikator stanowiska (powiązanie z tabelą `positions`)
+    customer_id int,                            -- Identyfikator klienta (jeśli pracownik jest też klientem)
+    contract_number varchar(20),                -- Numer umowy
+    employment_end_date date,                   -- Data zakończenia zatrudnienia
+    salary varchar(10),                         -- Wynagrodzenie (zalecane: zmiana na `decimal`)
+    bonus varchar(5),                           -- Premia (zalecane: zmiana na `decimal`)
+    foreign key (position_id) references positions (position_id), -- Klucz obcy do tabeli `positions`
+    foreign key (customer_id) references customers (customer_id)  -- Klucz obcy do tabeli `customers`
 );
 
+-- Tabela przechowująca informacje o atrakcjach
 create table attractions (
-    attraction_id int primary key auto_increment,
-    name varchar(20),
-    description varchar(255),
-    employee_id int,
-    foreign key (employee_id) references employees (employee_id)
+    attraction_id int primary key auto_increment, -- Unikalny identyfikator atrakcji
+    name varchar(20),                             -- Nazwa atrakcji
+    description varchar(255),                     -- Opis atrakcji
+    employee_id int,                              -- Identyfikator pracownika odpowiedzialnego za atrakcję
+    foreign key (employee_id) references employees (employee_id) -- Klucz obcy do tabeli `employees`
 );
 
+-- Tabela przechowująca rodzaje biletów
 create table ticket_types (
-    ticket_type_id int primary key auto_increment,
-    ticket_type varchar(10)
+    ticket_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju biletu
+    ticket_type varchar(10)                        -- Nazwa rodzaju biletu
 );
 
+-- Tabela przechowująca rodzaje zniżek
 create table discounts (
-    discount_type_id int primary key auto_increment,
-    discount_type varchar(10),
-    discount_value varchar(5)
+    discount_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju zniżki
+    discount_type varchar(10),                       -- Nazwa rodzaju zniżki
+    discount_value varchar(5)                        -- Wartość zniżki (zalecane: zmiana na `decimal`)
 );
 
+-- Tabela przechowująca dane o biletach
 create table tickets (
-    ticket_id int primary key auto_increment,
-    ticket_type_id int,
-    discount_id int,
-    price varchar(5),
-    foreign key (ticket_type_id) references ticket_types (ticket_type_id),
-    foreign key (discount_id) references discounts (discount_type_id)
+    ticket_id int primary key auto_increment,        -- Unikalny identyfikator biletu
+    ticket_type_id int,                              -- Identyfikator rodzaju biletu (powiązanie z tabelą `ticket_types`)
+    discount_id int,                                 -- Identyfikator zniżki (powiązanie z tabelą `discounts`)
+    price varchar(5),                                -- Cena biletu (zalecane: zmiana na `decimal`)
+    foreign key (ticket_type_id) references ticket_types (ticket_type_id), -- Klucz obcy do tabeli `ticket_types`
+    foreign key (discount_id) references discounts (discount_type_id)     -- Klucz obcy do tabeli `discounts`
 );
 
+-- Tabela przechowująca rodzaje płatności
 create table payment_types (
-    payment_type_id int primary key auto_increment,
-    payment_type varchar(10)
+    payment_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju płatności
+    payment_type varchar(10)                        -- Nazwa rodzaju płatności
 );
 
+-- Tabela przechowująca zamówienia
 create table orders (
-    order_id int primary key auto_increment,
-    customer_id int,
-    ticket_id int,
-    approving_employee_id int,
-    purchase_date datetime,
-    foreign key (ticket_id) references tickets (ticket_id),
-    foreign key (customer_id) references customers (customer_id),
-    foreign key (approving_employee_id) references employees (employee_id)
+    order_id int primary key auto_increment,        -- Unikalny identyfikator zamówienia
+    customer_id int,                                -- Identyfikator klienta (powiązanie z tabelą `customers`)
+    ticket_id int,                                  -- Identyfikator biletu (powiązanie z tabelą `tickets`)
+    approving_employee_id int,                      -- Identyfikator pracownika zatwierdzającego (powiązanie z tabelą `employees`)
+    purchase_date datetime,                         -- Data zakupu
+    foreign key (ticket_id) references tickets (ticket_id), -- Klucz obcy do tabeli `tickets`
+    foreign key (customer_id) references customers (customer_id), -- Klucz obcy do tabeli `customers`
+    foreign key (approving_employee_id) references employees (employee_id) -- Klucz obcy do tabeli `employees`
 );
 
-drop database if exists amusement_park;
-create database amusement_park;
-use amusement_park;
-
-create table customers (
-    customer_id int primary key auto_increment,
-    first_name varchar(25),
-    last_name varchar(50),
-    phone_number varchar(15),
-    email_address varchar(50)
-);
-
-create table positions (
-    position_id int primary key auto_increment,
-    position_name varchar(20)
-);
-
-create table employees (
-    employee_id int primary key auto_increment,
-    position_id int,
-    customer_id int,
-    contract_number varchar(20),
-    employment_end_date date,
-    salary varchar(10),
-    bonus varchar(5),
-    foreign key (position_id) references positions (position_id),
-    foreign key (customer_id) references customers (customer_id)
-);
-
-create table attractions (
-    attraction_id int primary key auto_increment,
-    name varchar(20),
-    description varchar(255),
-    employee_id int,
-    foreign key (employee_id) references employees (employee_id)
-);
-
-create table ticket_types (
-    ticket_type_id int primary key auto_increment,
-    ticket_type varchar(10)
-);
-
-create table discounts (
-    discount_type_id int primary key auto_increment,
-    discount_type varchar(10),
-    discount_value decimal(5,2)
-);
-
-create table tickets (
-    ticket_id int primary key auto_increment,
-    ticket_type_id int,
-    discount_id int,
-    price decimal(10,2)
-    foreign key (ticket_type_id) references ticket_types (ticket_type_id),
-    foreign key (discount_id) references discounts (discount_type_id)
-);
-
-create table payment_types (
-    payment_type_id int primary key auto_increment,
-    payment_type varchar(10)
-);
-
-create table orders (
-    order_id int primary key auto_increment,
-    customer_id int,
-    approving_employee_id int,
-    purchase_date datetime,
-    payment_type_id int,
-    foreign key (customer_id) references customers (customer_id),
-    foreign key (approving_employee_id) references employees (employee_id),
-    foreign key (payment_type_id) references payment_types (payment_type_id)
-);
-
+-- Tabela łącząca zamówienia z biletami (jeśli zamówienie zawiera wiele biletów)
 create table order_tickets (
-    order_ticket_id int primary key auto_increment,
-    order_id int,
-    ticket_id int,
-    quantity int,
-    foreign key (order_id) references orders (order_id),
-    foreign key (ticket_id) references tickets (ticket_id)
+    order_ticket_id int primary key auto_increment, -- Unikalny identyfikator wiersza
+    order_id int,                                   -- Identyfikator zamówienia (powiązanie z tabelą `orders`)
+    ticket_id int,                                  -- Identyfikator biletu (powiązanie z tabelą `tickets`)
+    quantity int,                                   -- Ilość danego rodzaju biletu w zamówieniu
+    foreign key (order_id) references orders (order_id), -- Klucz obcy do tabeli `orders`
+    foreign key (ticket_id) references tickets (ticket_id) -- Klucz obcy do tabeli `tickets`
 );
