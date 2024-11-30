@@ -1,83 +1,83 @@
--- Usunięcie bazy danych, jeśli istnieje
+-- usunięcie bazy danych, jeśli istnieje
 drop database if exists amusement_park;
 
--- Utworzenie nowej bazy danych
+-- utworzenie nowej bazy danych
 create database amusement_park;
 use amusement_park;
 
--- Tabela przechowująca dane klientów
+-- tabela przechowująca dane klientów
 create table customers (
-    customer_id int primary key auto_increment, -- Unikalny identyfikator klienta
-    first_name varchar(25) NOT NULL,            -- Imię klienta
-    last_name varchar(50) NOT NULL,             -- Nazwisko klienta
-    phone_number varchar(15),                   -- Numer telefonu
-    email_address varchar(100) NOT NULL         -- Adres e-mail
+    customer_id int primary key auto_increment, -- unikalny identyfikator klienta
+    first_name varchar(25) not null,            -- imię klienta
+    last_name varchar(50) not null,             -- nazwisko klienta
+    phone_number varchar(15),                   -- numer telefonu
+    email_address varchar(100) not null         -- adres e-mail
 );
 
--- Tabela przechowująca rodzaje stanowisk pracy
+-- tabela przechowująca rodzaje stanowisk pracy
 create table positions (
-    position_id int primary key auto_increment, -- Unikalny identyfikator stanowiska
-    position_name varchar(50) NOT NULL          -- Nazwa stanowiska
+    position_id int primary key auto_increment, -- unikalny identyfikator stanowiska
+    position_name varchar(50) not null          -- nazwa stanowiska
 );
 
--- Tabela przechowująca dane pracowników
+-- tabela przechowująca dane pracowników
 create table employees (
-    employee_id int primary key auto_increment, -- Unikalny identyfikator pracownika
-    position_id int NOT NULL,                   -- Identyfikator stanowiska
-    customer_id int,                            -- Identyfikator klienta (jeśli pracownik jest też klientem)
-    contract_number varchar(20),                -- Numer umowy
-    employment_end_date date,                   -- Data zakończenia zatrudnienia
-    salary decimal(10,2) NOT NULL,              -- Wynagrodzenie
-    bonus decimal(5,2),                         -- Premia
+    employee_id int primary key auto_increment, -- unikalny identyfikator pracownika
+    position_id int not null,                   -- identyfikator stanowiska
+    customer_id int,                            -- identyfikator klienta (jeśli pracownik jest też klientem)
+    contract_number varchar(20),                -- numer umowy
+    employment_end_date date,                   -- data zakończenia zatrudnienia
+    salary decimal(10,2) not null,              -- wynagrodzenie
+    bonus decimal(7,2),                         -- premia
     foreign key (position_id) references positions (position_id),
     foreign key (customer_id) references customers (customer_id)
 );
 
--- Tabela przechowująca informacje o atrakcjach
+-- tabela przechowująca informacje o atrakcjach
 create table attractions (
-    attraction_id int primary key auto_increment, -- Unikalny identyfikator atrakcji
-    name varchar(50) NOT NULL,                    -- Nazwa atrakcji
-    description varchar(255),                     -- Opis atrakcji
-    employee_id int,                              -- Identyfikator pracownika
+    attraction_id int primary key auto_increment, -- unikalny identyfikator atrakcji
+    name varchar(50) not null,                    -- nazwa atrakcji
+    description varchar(255),                     -- opis atrakcji
+    employee_id int,                              -- identyfikator pracownika
     foreign key (employee_id) references employees (employee_id)
 );
 
--- Tabela przechowująca rodzaje biletów
+-- tabela przechowująca rodzaje biletów
 create table ticket_types (
-    ticket_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju biletu
-    ticket_type varchar(20) NOT NULL              -- Nazwa rodzaju biletu
+    ticket_type_id int primary key auto_increment, -- unikalny identyfikator rodzaju biletu
+    ticket_type varchar(20) not null              -- nazwa rodzaju biletu
 );
 
--- Tabela przechowująca rodzaje zniżek
+-- tabela przechowująca rodzaje zniżek
 create table discounts (
-    discount_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju zniżki
-    discount_type varchar(20) NOT NULL,             -- Nazwa rodzaju zniżki
-    discount_value decimal(5,2) NOT NULL            -- Wartość zniżki
+    discount_type_id int primary key auto_increment, -- unikalny identyfikator rodzaju zniżki
+    discount_type varchar(20) not null,             -- nazwa rodzaju zniżki
+    discount_value decimal(5,2) not null            -- wartość zniżki
 );
 
--- Tabela przechowująca dane o biletach
+-- tabela przechowująca dane o biletach
 create table tickets (
-    ticket_id int primary key auto_increment,        -- Unikalny identyfikator biletu
-    ticket_type_id int NOT NULL,                     -- Identyfikator rodzaju biletu
-    price decimal(5,2) NOT NULL,                     -- Cena biletu
-    foreign key (ticket_type_id) references ticket_types (ticket_type_id),
+    ticket_id int primary key auto_increment,        -- unikalny identyfikator biletu
+    ticket_type_id int not null,                     -- identyfikator rodzaju biletu
+    price decimal(5,2) not null,                     -- cena biletu
+    foreign key (ticket_type_id) references ticket_types (ticket_type_id)
 );
 
--- Tabela przechowująca rodzaje płatności
+-- tabela przechowująca rodzaje płatności
 create table payment_types (
-    payment_type_id int primary key auto_increment, -- Unikalny identyfikator rodzaju płatności
-    payment_type varchar(20) NOT NULL              -- Nazwa rodzaju płatności
+    payment_type_id int primary key auto_increment, -- unikalny identyfikator rodzaju płatności
+    payment_type varchar(20) not null              -- nazwa rodzaju płatności
 );
 
--- Tabela przechowująca zamówienia
+-- tabela przechowująca zamówienia
 create table orders (
-    order_id int primary key auto_increment,        -- Unikalny identyfikator zamówienia
-    customer_id int NOT NULL,                       -- Identyfikator klienta
-    ticket_id int NOT NULL,                         -- Identyfikator biletu
-    approving_employee_id int,                      -- Identyfikator pracownika
-    payment_type_id int NOT NULL,                   -- Identyfikator rodzaju płatności
-    purchase_date datetime NOT NULL,                -- Data zakupu
-    discount_id int,                                 -- Identyfikator zniżki
+    order_id int primary key auto_increment,        -- unikalny identyfikator zamówienia
+    customer_id int not null,                       -- identyfikator klienta
+    ticket_id int not null,                         -- identyfikator biletu
+    approving_employee_id int,                      -- identyfikator pracownika
+    payment_type_id int not null,                   -- identyfikator rodzaju płatności
+    purchase_date timestamp default current_timestamp, -- data zakupu (automatycznie ustawiana)
+    discount_id int,                                 -- identyfikator zniżki
     foreign key (ticket_id) references tickets (ticket_id),
     foreign key (customer_id) references customers (customer_id),
     foreign key (approving_employee_id) references employees (employee_id),
@@ -85,18 +85,40 @@ create table orders (
     foreign key (discount_id) references discounts (discount_type_id)
 );
 
--- Tabela łącząca zamówienia z biletami
+-- tabela łącząca zamówienia z biletami
 create table order_tickets (
-    order_ticket_id int primary key auto_increment, -- Unikalny identyfikator
-    order_id int NOT NULL,                          -- Identyfikator zamówienia
-    ticket_id int NOT NULL,                         -- Identyfikator biletu
-    quantity int NOT NULL,                          -- Ilość biletów
+    order_ticket_id int primary key auto_increment, -- unikalny identyfikator
+    order_id int not null,                          -- identyfikator zamówienia
+    ticket_id int not null,                         -- identyfikator biletu
+    quantity int not null,                          -- ilość biletów
     foreign key (order_id) references orders (order_id),
     foreign key (ticket_id) references tickets (ticket_id)
 );
 
-INSERT INTO customers (first_name, last_name, phone_number, email_address)
-VALUES
+-- tabela przechowująca ceny biletów zależne od daty (np. weekendowe)
+create table ticket_prices (
+    ticket_price_id int primary key auto_increment,
+    ticket_id int not null,
+    price decimal(5,2) not null,
+    valid_from datetime not null,   -- data początkowa
+    valid_to datetime,              -- data końcowa
+    foreign key (ticket_id) references tickets (ticket_id)
+);
+
+-- tabela historii zmian zniżek
+create table discount_history (
+    discount_history_id int primary key auto_increment,
+    order_id int not null,
+    old_discount_id int,
+    new_discount_id int not null,
+    change_date datetime not null default current_timestamp,
+    foreign key (order_id) references orders (order_id),
+    foreign key (old_discount_id) references discounts (discount_type_id),
+    foreign key (new_discount_id) references discounts (discount_type_id)
+);
+
+insert into customers (first_name, last_name, phone_number, email_address)
+values
 ('Anna', 'Kowalska', '123456789', 'anna.kowalska@example.com'),
 ('Jan', 'Nowak', '234567890', 'jan.nowak@example.com'),
 ('Ewa', 'Wiśniewska', '345678901', 'ewa.wisniewska@example.com'),
@@ -118,8 +140,8 @@ VALUES
 ('Adrian', 'Czajka', '111222333', 'adrian.czajka@example.com'),
 ('Natalia', 'Wilk', '222333444', 'natalia.wilk@example.com');
 
-INSERT INTO positions (position_name)
-VALUES
+insert into positions (position_name)
+values
 ('Kierownik atrakcji'),
 ('Operator atrakcji'),
 ('Kasjer'),
@@ -131,21 +153,21 @@ VALUES
 ('Ratownik medyczny'),
 ('Dyrektor');
 
-INSERT INTO employees (position_id, customer_id, contract_number, employment_end_date, salary, bonus)
-VALUES
-(1, 11, 'CON123', NULL, 5000.00, 500.00),
-(2, 12, 'CON124', NULL, 4000.00, 300.00),
-(3, 13, 'CON125', NULL, 3500.00, 200.00),
-(4, 14, 'CON126', NULL, 6000.00, 700.00),
-(5, 15, 'CON127', NULL, 3000.00, 100.00),
-(6, 16, 'CON128', NULL, 4500.00, 400.00),
-(7, 17, 'CON129', NULL, 4000.00, 300.00),
-(8, 18, 'CON130', NULL, 3800.00, 250.00),
-(9, 19, 'CON131', NULL, 4200.00, 350.00),
-(10, 20, 'CON132', NULL, 7000.00, 1000.00);
+insert into employees (position_id, customer_id, contract_number, employment_end_date, salary, bonus)
+values
+(1, 11, 'CON123', null, 5000.00, 500.00),
+(2, 12, 'CON124', null, 4000.00, 300.00),
+(3, 13, 'CON125', null, 3500.00, 200.00),
+(4, 14, 'CON126', null, 6000.00, 700.00),
+(5, 15, 'CON127', null, 3000.00, 100.00),
+(6, 16, 'CON128', null, 4500.00, 400.00),
+(7, 17, 'CON129', null, 4000.00, 300.00),
+(8, 18, 'CON130', null, 3800.00, 250.00),
+(9, 19, 'CON131', null, 4200.00, 350.00),
+(10, 20, 'CON132', null, 7000.00, null);
 
-INSERT INTO attractions (name, description, employee_id)
-VALUES
+insert into attractions (name, description, employee_id)
+values
 ('Rollercoaster', 'Największy rollercoaster w parku', 1),
 ('Karuzela', 'Tradycyjna karuzela dla dzieci', 2),
 ('Dom strachów', 'Atrakcja dla miłośników horrorów', 3),
@@ -157,8 +179,8 @@ VALUES
 ('Trampoliny', 'Zabawa z wysokościami', 9),
 ('Kolejka widokowa', 'Widok na cały park', 10);
 
-INSERT INTO ticket_types (ticket_type)
-VALUES
+insert into ticket_types (ticket_type)
+values
 ('Normalny'),
 ('Ulgowy'),
 ('Rodzinny'),
@@ -170,8 +192,8 @@ VALUES
 ('Specjalny'),
 ('Dla firm');
 
-INSERT INTO discounts (discount_type, discount_value)
-VALUES
+insert into discounts (discount_type, discount_value)
+values
 ('Brak zniżki', 0.00),
 ('Student', 15.00),
 ('Dziecko', 20.00),
@@ -183,8 +205,8 @@ VALUES
 ('Specjalna okazja', 40.00),
 ('VIP', 50.00);
 
-INSERT INTO tickets (ticket_type_id, price)
-VALUES
+insert into tickets (ticket_type_id, price)
+values
 (1, 50.00),
 (2, 30.00),
 (3, 100.00),
@@ -196,8 +218,8 @@ VALUES
 (9, 120.00),
 (10, 400.00);
 
-INSERT INTO payment_types (payment_type)
-VALUES
+insert into payment_types (payment_type)
+values
 ('Gotówka'),
 ('Karta kredytowa'),
 ('Karta debetowa'),
@@ -209,21 +231,21 @@ VALUES
 ('Voucher'),
 ('Bitcoin');
 
-INSERT INTO orders (customer_id, ticket_id, approving_employee_id, payment_type_id, purchase_date, discount_id)
-VALUES
-(1, 1, 11, 1, '2024-11-01 10:00:00', NULL),
-(2, 2, 12, 2, '2024-11-02 11:30:00', 2),
-(3, 3, 13, 3, '2024-11-03 12:00:00', 3),
-(4, 4, 14, 4, '2024-11-04 13:15:00', 4),
-(5, 5, 15, 5, '2024-11-05 14:20:00', 5),
-(6, 6, 16, 6, '2024-11-06 15:25:00', 6),
-(7, 7, 17, 7, '2024-11-07 16:30:00', 7),
-(8, 8, 18, 8, '2024-11-08 17:35:00', 8),
-(9, 9, 19, 9, '2024-11-09 18:40:00', 9),
-(10, 10, 20, 10, '2024-11-10 19:45:00', 10);
+insert into orders (customer_id, ticket_id, approving_employee_id, payment_type_id, purchase_date, discount_id)
+values
+(1, 1, 1, 1, '2024-11-01 10:00:00', null),
+(2, 2, 2, 2, '2024-11-02 11:30:00', 2),
+(3, 3, 3, 3, '2024-11-03 12:00:00', 3),
+(4, 4, 4, 4, '2024-11-04 13:15:00', 4),
+(5, 5, 5, 5, '2024-11-05 14:20:00', 5),
+(6, 6, 6, 6, '2024-11-06 15:25:00', 6),
+(7, 7, 7, 7, '2024-11-07 16:30:00', 7),
+(8, 8, 8, 8, '2024-11-08 17:35:00', 8),
+(9, 9, 9, 9, '2024-11-09 18:40:00', 9),
+(10, 10, 10, 10, '2024-11-10 19:45:00', 10);
 
-INSERT INTO order_tickets (order_id, ticket_id, quantity)
-VALUES
+insert into order_tickets (order_id, ticket_id, quantity)
+values
 (1, 1, 2),
 (2, 2, 3),
 (3, 3, 1),
@@ -234,3 +256,29 @@ VALUES
 (8, 8, 3),
 (9, 9, 6),
 (10, 10, 2);
+
+insert into ticket_prices (ticket_id, price, valid_from, valid_to)
+values
+(1, 55.00, '2024-11-01 00:00:00', '2024-11-07 23:59:59'),
+(2, 32.00, '2024-11-02 00:00:00', '2024-11-07 23:59:59'),
+(3, 105.00, '2024-11-03 00:00:00', '2024-11-07 23:59:59'),
+(4, 42.00, '2024-11-04 00:00:00', '2024-11-07 23:59:59'),
+(5, 210.00, '2024-11-05 00:00:00', '2024-11-07 23:59:59'),
+(6, 520.00, '2024-11-06 00:00:00', '2024-11-07 23:59:59'),
+(7, 360.00, '2024-11-07 00:00:00', '2024-11-07 23:59:59'),
+(8, 85.00, '2024-11-08 00:00:00', '2024-11-14 23:59:59'),
+(9, 125.00, '2024-11-09 00:00:00', '2024-11-14 23:59:59'),
+(10, 410.00, '2024-11-10 00:00:00', '2024-11-14 23:59:59');
+
+insert into discount_history (order_id, old_discount_id, new_discount_id, change_date)
+values
+(1, null, 2, '2024-11-01 10:15:00'),
+(2, null, 3, '2024-11-02 11:45:00'),
+(3, null, 4, '2024-11-03 12:30:00'),
+(4, null, 5, '2024-11-04 13:45:00'),
+(5, null, 6, '2024-11-05 14:50:00'),
+(6, null, 7, '2024-11-06 15:40:00'),
+(7, null, 8, '2024-11-07 16:45:00'),
+(8, null, 9, '2024-11-08 17:50:00'),
+(9, null, 10, '2024-11-09 18:55:00'),
+(10, null, 1, '2024-11-10 19:50:00');
