@@ -7,12 +7,22 @@
         <mxCell id="XPRnQNgbobyv5xROqSl8-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="ZbyDSgYa3pWmA4iAzCM0-1" target="ZbyDSgYa3pWmA4iAzCM0-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="XPRnQNgbobyv5xROqSl8-12" value="SELECT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="XPRnQNgbobyv5xROqSl8-1">
+          <mxGeometry x="0.6818" y="1" relative="1" as="geometry">
+            <mxPoint x="10" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="XPRnQNgbobyv5xROqSl8-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ZbyDSgYa3pWmA4iAzCM0-1" target="ZbyDSgYa3pWmA4iAzCM0-6">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="260" y="310" />
               <mxPoint x="260" y="150" />
             </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XPRnQNgbobyv5xROqSl8-13" value="SELECT&lt;br&gt;UPDATE&lt;br&gt;INSERT&lt;br&gt;DELETE" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="XPRnQNgbobyv5xROqSl8-2">
+          <mxGeometry x="0.5556" y="-2" relative="1" as="geometry">
+            <mxPoint x="20" y="-2" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="XPRnQNgbobyv5xROqSl8-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#60a917;strokeColor=#2D7600;" edge="1" parent="1" source="ZbyDSgYa3pWmA4iAzCM0-1" target="ZbyDSgYa3pWmA4iAzCM0-10">
