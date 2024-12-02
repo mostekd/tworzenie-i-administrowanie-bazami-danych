@@ -289,11 +289,9 @@ drop user if exists 'worker_amusement_park'@'localhost';
 drop user if exists 'system_amusement_park'@'localhost';
 drop user if exists 'client_amusement_park'@'localhost';
 
--- Stworzenie użytkownika 'admin' z pełnymi uprawnieniami
 create user 'admin_amusement_park'@'localhost' identified by 'haslo_admina';
-grant all privileges on amusement_park.* to 'admin'@'localhost';
+grant all privileges on amusement_park.* to 'admin_amusement_park'@'localhost';
 
--- Stworzenie użytkownika 'worker' z ograniczonymi uprawnieniami
 create user 'worker_amusement_park'@'localhost' identified by 'haslo_pracownika';
 grant select, update on amusement_park.attractions to 'worker_amusement_park'@'localhost';
 grant select on amusement_park.customers to 'worker_amusement_park'@'localhost';
