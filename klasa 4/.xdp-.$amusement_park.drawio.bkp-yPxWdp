@@ -96,11 +96,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="pEtAp3QmCNx8E3dbdPnF-24" value="SELECT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="pEtAp3QmCNx8E3dbdPnF-1">
-          <mxGeometry x="0.746" y="-1" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="pEtAp3QmCNx8E3dbdPnF-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fillColor=#1ba1e2;strokeColor=#006EAF;" edge="1" parent="1" source="ZbyDSgYa3pWmA4iAzCM0-2" target="ZbyDSgYa3pWmA4iAzCM0-5">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">

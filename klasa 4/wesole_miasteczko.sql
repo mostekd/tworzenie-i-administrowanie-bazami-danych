@@ -294,11 +294,18 @@ create user 'admin_amusement_park'@'localhost' identified by 'haslo_admina';
 grant all privileges on amusement_park.* to 'admin'@'localhost';
 
 -- Stworzenie użytkownika 'worker' z ograniczonymi uprawnieniami
-create user 'worker_amusement_parkr'@'localhost' identified by 'haslo_pracownika';
-grant select, insert, update, delete on amusement_park.customers to 'worker'@'localhost';
-grant select, insert, update, delete on amusement_park.orders to 'worker'@'localhost';
-grant select, insert, update, delete on amusement_park.attractions to 'worker'@'localhost';
-grant select, insert, update, delete on amusement_park.employees to 'worker'@'localhost';
+create user 'worker_amusement_park'@'localhost' identified by 'haslo_pracownika';
+grant select, update on amusement_park.attractions to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.customers to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.discounts to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.employees to 'worker_amusement_park'@'localhost';
+grant select, update, delete on amusement_park.orders to 'worker_amusement_park'@'localhost';
+grant select, update, delete on amusement_park.order_tickets to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.payment_types to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.positions to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.tickets to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.ticket_prices to 'worker_amusement_park'@'localhost';
+grant select on amusement_park.ticket_types to 'worker_amusement_park'@'localhost';
 
 create user 'system_amusement_park'@'localhost' identified by 'haslo_systemu';
 grant select on amusement_park.discounts to 'system_amusement_park'@'localhost';
