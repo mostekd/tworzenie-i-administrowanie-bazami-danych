@@ -283,16 +283,28 @@ values
 (9, null, 10, '2024-11-09 18:55:00'),
 (10, null, 1, '2024-11-10 19:50:00');
 
+
+drop user if exists 'admin_amusement_park'@'localhost';
+drop user if exists 'worker_amusement_park'@'localhost';
+drop user if exists 'system_amusement_park'@'localhost';
+drop user if exists 'client_amusement_park'@'localhost';
+
 -- Stworzenie użytkownika 'admin' z pełnymi uprawnieniami
-create user 'admin_amusement_park'@'localhost' identified by 'hasło_admina';
+create user 'admin_amusement_park'@'localhost' identified by 'haslo_admina';
 grant all privileges on amusement_park.* to 'admin'@'localhost';
 
 -- Stworzenie użytkownika 'worker' z ograniczonymi uprawnieniami
-create user 'worker_amusement_parkr'@'localhost' identified by 'hasło_pracownika';
+create user 'worker_amusement_parkr'@'localhost' identified by 'haslo_pracownika';
 grant select, insert, update, delete on amusement_park.customers to 'worker'@'localhost';
 grant select, insert, update, delete on amusement_park.orders to 'worker'@'localhost';
 grant select, insert, update, delete on amusement_park.attractions to 'worker'@'localhost';
 grant select, insert, update, delete on amusement_park.employees to 'worker'@'localhost';
+
+create user 'system_amusement_park'@'localhost' identified by 'haslo_systemu';
+
+
+create user 'client_amusement_park'@'localhost' identified by 'haslo_klienta';
+
 
 -- Zastosowanie uprawnień
 flush privileges;
