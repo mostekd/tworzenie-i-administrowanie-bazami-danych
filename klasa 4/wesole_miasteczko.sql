@@ -301,10 +301,23 @@ grant select, insert, update, delete on amusement_park.attractions to 'worker'@'
 grant select, insert, update, delete on amusement_park.employees to 'worker'@'localhost';
 
 create user 'system_amusement_park'@'localhost' identified by 'haslo_systemu';
-
+grant select on amusement_park.discounts to 'system_amusement_park'@'localhost';
+grant select, insert, update on amusement_park.discount_history to 'system_amusement_park'@'localhost';
+grant select, update on amusement_park.orders to 'system_amusement_park'@'localhost';
+grant select on amusement_park.order_tickets to 'system_amusement_park'@'localhost';
+grant select on amusement_park.tickets to 'system_amusement_park'@'localhost';
+grant select on amusement_park.ticket_prices to 'system_amusement_park'@'localhost';
+grant select on amusement_park.ticket_types to 'system_amusement_park'@'localhost';
 
 create user 'client_amusement_park'@'localhost' identified by 'haslo_klienta';
-
+grant select on amusement_park.attractions to 'client_amusement_park'@'localhost';
+grant select, insert, update, delete on amusement_park.customers to 'client_amusement_park'@'localhost';
+grant select, insert, update, delete on amusement_park.orders to 'client_amusement_park'@'localhost';
+grant select, insert, update, delete on amusement_park.order_tickets to 'client_amusement_park'@'localhost';
+grant select on amusement_park.payment_types to 'client_amusement_park'@'localhost';
+grant select on amusement_park.tickets to 'client_amusement_park'@'localhost';
+grant select on amusement_park.ticket_prices to 'client_amusement_park'@'localhost';
+grant select on amusement_park.ticket_types to 'client_amusement_park'@'localhost';
 
 -- Zastosowanie uprawnień
 flush privileges;
