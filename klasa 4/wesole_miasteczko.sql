@@ -38,8 +38,16 @@ create table attractions (
     attraction_id int primary key auto_increment, -- unikalny identyfikator atrakcji
     name varchar(50) not null,                    -- nazwa atrakcji
     description varchar(255),                     -- opis atrakcji
+    permissible_age int,                          -- dopuszczalny wiek
     employee_id int,                              -- identyfikator pracownika
     foreign key (employee_id) references employees (employee_id)
+);
+
+create table repairs (
+    repair_id int primary key auto_increment,
+    attraction_id int,
+    end_repair_date date,
+    foreign key (attraction_id) references attractions (attraction_id)
 );
 
 -- tabela przechowująca rodzaje biletów
@@ -157,18 +165,29 @@ values
 (9, 19, 'CON131', null, 4200.00, 350.00),
 (10, 20, 'CON132', null, 7000.00, null);
 
-insert into attractions (name, description, employee_id)
+insert into attractions (name, description, permissible_age, employee_id)
 values
-('Rollercoaster', 'Największy rollercoaster w parku', 1),
-('Karuzela', 'Tradycyjna karuzela dla dzieci', 2),
-('Dom strachów', 'Atrakcja dla miłośników horrorów', 3),
-('Basen z kulkami', 'Bezpieczna zabawa dla najmłodszych', 4),
-('Wieża spadków', 'Przygoda dla fanów adrenaliny', 5),
-('Labirynt luster', 'Ciekawe doświadczenie optyczne', 6),
-('Wodny zjazd', 'Atrakcja z efektami wodnymi', 7),
-('Strzelnica', 'Sprawdź swoje umiejętności strzeleckie', 8),
-('Trampoliny', 'Zabawa z wysokościami', 9),
-('Kolejka widokowa', 'Widok na cały park', 10);
+('Rollercoaster', 'Największy rollercoaster w parku', '12', 1),
+('Karuzela', 'Tradycyjna karuzela dla dzieci', '3', 2),
+('Dom strachów', 'Atrakcja dla miłośników horrorów', '15', 3),
+('Basen z kulkami', 'Bezpieczna zabawa dla najmłodszych', '3', 4),
+('Wieża spadków', 'Przygoda dla fanów adrenaliny', '12', 5),
+('Labirynt luster', 'Ciekawe doświadczenie optyczne', '6', 6),
+('Wodny zjazd', 'Atrakcja z efektami wodnymi', '7', 7),
+('Strzelnica', 'Sprawdź swoje umiejętności strzeleckie', '14', 8),
+('Trampoliny', 'Zabawa z wysokościami', '6', 9),
+('Kolejka widokowa', 'Widok na cały park', '2', 10);
+
+insert into repairs (attraction_id, end_repair_date)
+values
+('1', '2022-01-02'),
+('2', '2022-02-12'),
+('3', '2022-03-18'),
+('4', '2022-04-28'),
+('5', '2022-05-30'),
+('6', '2022-06-13'),
+('7', '2022-07-21'),
+('8', '2022-08-11');
 
 insert into ticket_types (ticket_type)
 values
