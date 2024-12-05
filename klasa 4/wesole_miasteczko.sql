@@ -58,7 +58,9 @@ create table discounts (
 -- tabela przechowująca dane o biletach
 create table tickets (
     ticket_id int primary key auto_increment,        -- unikalny identyfikator biletu
-    ticket_type_id int not null,                     -- identyfikator rodzaju biletu
+    ticket_type_id int not null,    
+    valid_from datetime not null,   -- data początkowa
+    valid_to datetime,              -- data końcowa                 -- identyfikator rodzaju biletu
     price decimal(5,2) not null,                     -- cena biletu
     foreign key (ticket_type_id) references ticket_types (ticket_type_id)
 );
@@ -72,14 +74,13 @@ create table payment_types (
 -- tabela przechowująca zamówienia
 create table orders (
     order_id int primary key auto_increment,        -- unikalny identyfikator zamówienia
-    customer_id int not null,                       -- identyfikator klienta
+    customer_id int,                       -- identyfikator klienta
     ticket_id int not null,                         -- identyfikator biletu
     approving_employee_id int,                      -- identyfikator pracownika
     payment_type_id int not null,                   -- identyfikator rodzaju płatności
     purchase_date timestamp default current_timestamp, -- data zakupu (automatycznie ustawiana)
     discount_id int,                                 -- identyfikator zniżki
     foreign key (ticket_id) references tickets (ticket_id),
-    foreign key (customer_id) references customers (customer_id),
     foreign key (approving_employee_id) references employees (employee_id),
     foreign key (payment_type_id) references payment_types (payment_type_id),
     foreign key (discount_id) references discounts (discount_type_id)
@@ -92,16 +93,6 @@ create table order_tickets (
     ticket_id int not null,                         -- identyfikator biletu
     quantity int not null,                          -- ilość biletów
     foreign key (order_id) references orders (order_id),
-    foreign key (ticket_id) references tickets (ticket_id)
-);
-
--- tabela przechowująca ceny biletów zależne od daty (np. weekendowe)
-create table ticket_prices (
-    ticket_price_id int primary key auto_increment,
-    ticket_id int not null,
-    price decimal(5,2) not null,
-    valid_from datetime not null,   -- data początkowa
-    valid_to datetime,              -- data końcowa
     foreign key (ticket_id) references tickets (ticket_id)
 );
 
@@ -205,18 +196,18 @@ values
 ('Specjalna okazja', 40.00),
 ('VIP', 50.00);
 
-insert into tickets (ticket_type_id, price)
+insert into tickets (ticket_type_id, valid_from, valid_to, price)
 values
-(1, 50.00),
-(2, 30.00),
-(3, 100.00),
-(4, 40.00),
-(5, 200.00),
-(6, 500.00),
-(7, 350.00),
-(8, 80.00),
-(9, 120.00),
-(10, 400.00);
+(1, '2024-11-01 00:00:00', '2024-11-07 23:59:59', 55.00),
+(2, '2024-11-02 00:00:00', '2024-11-07 23:59:59', 32.00),
+(3, '2024-11-03 00:00:00', '2024-11-07 23:59:59', 105.00),
+(4, '2024-11-04 00:00:00', '2024-11-07 23:59:59', 42.00),
+(5, '2024-11-05 00:00:00', '2024-11-07 23:59:59', 210.00),
+(6, '2024-11-06 00:00:00', '2024-11-07 23:59:59', 520.00),
+(7, '2024-11-07 00:00:00', '2024-11-07 23:59:59', 360.00),
+(8, '2024-11-08 00:00:00', '2024-11-14 23:59:59', 85.00),
+(9, '2024-11-09 00:00:00', '2024-11-14 23:59:59', 125.00),
+(10, '2024-11-10 00:00:00', '2024-11-14 23:59:59', 410.00);
 
 insert into payment_types (payment_type)
 values
@@ -257,19 +248,6 @@ values
 (9, 9, 6),
 (10, 10, 2);
 
-insert into ticket_prices (ticket_id, price, valid_from, valid_to)
-values
-(1, 55.00, '2024-11-01 00:00:00', '2024-11-07 23:59:59'),
-(2, 32.00, '2024-11-02 00:00:00', '2024-11-07 23:59:59'),
-(3, 105.00, '2024-11-03 00:00:00', '2024-11-07 23:59:59'),
-(4, 42.00, '2024-11-04 00:00:00', '2024-11-07 23:59:59'),
-(5, 210.00, '2024-11-05 00:00:00', '2024-11-07 23:59:59'),
-(6, 520.00, '2024-11-06 00:00:00', '2024-11-07 23:59:59'),
-(7, 360.00, '2024-11-07 00:00:00', '2024-11-07 23:59:59'),
-(8, 85.00, '2024-11-08 00:00:00', '2024-11-14 23:59:59'),
-(9, 125.00, '2024-11-09 00:00:00', '2024-11-14 23:59:59'),
-(10, 410.00, '2024-11-10 00:00:00', '2024-11-14 23:59:59');
-
 insert into discount_history (order_id, old_discount_id, new_discount_id, change_date)
 values
 (1, null, 2, '2024-11-01 10:15:00'),
@@ -302,7 +280,6 @@ grant select, update, delete on amusement_park.order_tickets to 'worker_amusemen
 grant select on amusement_park.payment_types to 'worker_amusement_park'@'localhost';
 grant select on amusement_park.positions to 'worker_amusement_park'@'localhost';
 grant select on amusement_park.tickets to 'worker_amusement_park'@'localhost';
-grant select on amusement_park.ticket_prices to 'worker_amusement_park'@'localhost';
 grant select on amusement_park.ticket_types to 'worker_amusement_park'@'localhost';
 
 create user 'system_amusement_park'@'localhost' identified by 'haslo_systemu';
@@ -311,7 +288,6 @@ grant select, insert, update on amusement_park.discount_history to 'system_amuse
 grant select, update on amusement_park.orders to 'system_amusement_park'@'localhost';
 grant select on amusement_park.order_tickets to 'system_amusement_park'@'localhost';
 grant select on amusement_park.tickets to 'system_amusement_park'@'localhost';
-grant select on amusement_park.ticket_prices to 'system_amusement_park'@'localhost';
 grant select on amusement_park.ticket_types to 'system_amusement_park'@'localhost';
 
 create user 'client_amusement_park'@'localhost' identified by 'haslo_klienta';
@@ -321,7 +297,6 @@ grant select, insert, update, delete on amusement_park.orders to 'client_amuseme
 grant select, insert, update, delete on amusement_park.order_tickets to 'client_amusement_park'@'localhost';
 grant select on amusement_park.payment_types to 'client_amusement_park'@'localhost';
 grant select on amusement_park.tickets to 'client_amusement_park'@'localhost';
-grant select on amusement_park.ticket_prices to 'client_amusement_park'@'localhost';
 grant select on amusement_park.ticket_types to 'client_amusement_park'@'localhost';
 
 -- Zastosowanie uprawnień
