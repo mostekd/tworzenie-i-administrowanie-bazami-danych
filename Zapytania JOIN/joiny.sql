@@ -4,8 +4,8 @@ left join OrderItems as oi on o.OrderID = oi.OrderID
 where oi.Quantity > 0;
 
 select u.Name as UserName, u.Email as UserEmail, sum(oi.Quantity * oi.Price) as TotalOrderValue from Users as u
-inner join Orders as o on u.UserID = o.UserID
-inner join OrderItems as oi on o.OrderID = oi.OrderID
+join Orders as o on u.UserID = o.UserID
+join OrderItems as oi on o.OrderID = oi.OrderID
 group by u.Name, u.Email;
 
 select o.OrderID, u.Name as UserName, oi.Quantity as ProductCount from Orders as o
