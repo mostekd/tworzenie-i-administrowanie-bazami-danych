@@ -1,0 +1,19 @@
+Zapytanie 1:
+SELECT id, nazwa, opis, cena 
+FROM podzespoly 
+WHERE cena < 1000;
+
+Zapytanie 2:
+SELECT nazwa, opis 
+FROM podzespoly 
+WHERE dostepnosc = 'tak' AND producenci_id = (SELECT id FROM producenci WHERE nazwa = 'Intel');
+
+Zapytanie 3:
+SELECT p.nazwa AS nazwa_podzespolu, pr.nazwa AS nazwa_producenta
+FROM podzespoly p
+JOIN producenci pr ON p.producenci_id = pr.id;
+
+Zapytanie 4:
+UPDATE producenci 
+SET nazwa = 'PATRIOT' 
+WHERE nazwa = 'Patriot';
