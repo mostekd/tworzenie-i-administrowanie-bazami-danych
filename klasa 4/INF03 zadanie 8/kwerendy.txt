@@ -1,0 +1,11 @@
+zapytanie 1: wybierające jedynie pola id, nazwa i wystepowanie z tabeli Ryby dla ryb spokojnego żeru
+
+zapytanie 2: wybierające jedynie pola akwen i wojewodztwo z tabeli Lowisko dla łowisk, które są jeziorami lub rzekami
+
+zapytanie 3: wybierające jedynie pole nazwa z tabeli Ryby dla ryb, które nie mają okresu ochronnego. Zapytanie wykorzystuje relację
+
+zapytanie 4: tworzące tabelę wedkarze z polami:
+    id, typu liczbowego całkowitego (bez znaku, nie może przyjmować wartości NULL)
+    imie, typu tekstowego
+    nazwisko, typu tekstowego
+    punkty, typu liczbowego całkowitego
